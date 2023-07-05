@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MVCProekt.Models.UserProduct>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>User Products<img src="~/images/Chef.png" height="130" width="130" class="rotate"></h1>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                    <img src="~/images/@item.Product.ProductImage" height="150" width="150">
+                </td>
+            <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

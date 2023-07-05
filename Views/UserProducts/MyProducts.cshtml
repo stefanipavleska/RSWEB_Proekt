@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MVCProekt.Models.Product>
+
+@{
+    ViewData["Title"] = "MyProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>My Orders<img src="~/images/Chef.png" height="130" width="130" class="rotate"></h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                Enter data
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/@item.ProductImage" height="150" width="150">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-controller="Orders" asp-action="PostOrderUserLogged" asp-route-produktid="@item.Id">Enter data</a>
+                </td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    |
+                    <a asp-action="Details" asp-controller="Books" asp-route-id="@item.Id">Details</a> |
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MVCProekt.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Orders<img src="~/images/Chef.png" height="130" width="130" class="rotate"></h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Delivery
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOrder)
+            </td>
+            <td>
+                    <img src="~/images/@item.Product.ProductImage" height="150" width="150">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price)$ <br>
+                </td>
+                    @if ((item.Product.Price) >= 4)
+                    {
+                    <td>
+                           Free <br>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>2$</td>
+                    }
+            <td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
